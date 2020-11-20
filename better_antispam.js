@@ -121,9 +121,9 @@ module.exports = async (client, options) => {
           let muteEmbed = new MessageEmbed()
             .setAuthor(' Action | Auto Mute', `https://images-ext-2.discordapp.net/external/Wms63jAyNOxNHtfUpS1EpRAQer2UT0nOsFaWlnDdR3M/https/image.flaticon.com/icons/png/128/148/148757.png`)
             .addField('Member muted:',`${user}`)
-            .addField(`How much time got muted?:`,`${timeMuted} seconds (10 min)`)
+            .addField(`Time:`,`${timeMuted / 1000} seconds (${timeMuted / 1000 / 60} min)`)
             .addField('Reason of mute: ', `Spam`)
-            .addField(`When it was muted that person:`,TheDate+ " at "+ clock+" "+amORpm)
+            .addField(`Timestamp:`,TheDate + " at "+ clock + " " + amORpm)
             .setColor('#D9D900')
           ReportChannel.send(muteEmbed);
           setTimeout(()=>{
