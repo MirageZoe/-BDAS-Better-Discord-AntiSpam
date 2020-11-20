@@ -19,8 +19,10 @@ module.exports = async (client, options) => {
   const ignoredMembers = (options && options.ignoredMembers) || []; // Default value: None. Explication: These members are directly affected and they do not require to have the role above. Good for undercover pranks.
   const mutedRole = (options && options.mutedRole) || "muted"; // Default value: muted. Explication: Here you put the name of the role that should not let people write/speak or anything else in your server. If there is no role set, by default, the module will attempt to create the role for you & set it correctly for every channel in your server. It will be named "muted".
   const timeMuted = (options && options.timeMuted) || 1000 * 600; // Default value: 10 minutes. Explication: This is how much time member X will be muted. if not set, default would be 10 min.
-  const logChannel = (options && options.logChannel) || "AntiSpam-logs"; // Default value: "AhtiSpam-logs". Explication: This is the channel where every report about spamming goes to. If it's not set up, it will attempt to create the channel.
-
+  const logChannel = (options && options.logChannel) || "AntiSpam-logs"; // Default value: "AntiSpam-logs". Explication: This is the channel where every report about spamming goes to. If it's not set up, it will attempt to create the channel.
+  const shouldDelete = (options && !!options.shouldDelete) || false; // Default value: false. Explication: This boolean is to decide whether or not the module should delete the message.
+  /* Double not operators coerce the option to a boolean */
+  
 // If something is added wrong, throw an error
 
   if(isNaN(limitUntilWarn)) throw new Error("ERROR: <limitUntilWarn> option is not set up right! Please check it again to be a number in settings.");
@@ -117,6 +119,7 @@ module.exports = async (client, options) => {
     
       if (user) {
         user.roles.add(role).then(()=>{
+          if (shouldDelete && m.author.lastMessage) m.author.lastMessage.delete(); // delete the message
           m.channel.send(`<@!${m.author.id}>, ${muteMsg}`);
           let muteEmbed = new MessageEmbed()
             .setAuthor(' Action | Auto Mute', `https://images-ext-2.discordapp.net/external/Wms63jAyNOxNHtfUpS1EpRAQer2UT0nOsFaWlnDdR3M/https/image.flaticon.com/icons/png/128/148/148757.png`)
